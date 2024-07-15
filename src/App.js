@@ -17,14 +17,23 @@ export default function App() {
 }
 
 function Logo() {
-  return <h1>🏝 Far Away 🧳</h1>;
+  return <h1>🏝️ Far Away 🧳</h1>;
 }
 
 function Form() {
   return (
-    <div className="add-form">
+    <form className="add-form">
       <h3>What do you need for your 😍 trip?</h3>
-    </div>
+      <select>
+        {Array.from({ length: 20 }, (_, i) => i + 1).map(num => (
+          <option value={num} key={num}>
+            {num}
+          </option>
+        ))}
+      </select>
+      <input type="text" placeholder="Item..." />
+      <button>Add</button>
+    </form>
   );
 }
 
@@ -33,7 +42,7 @@ function PackingList() {
     <div className="list">
       <ul>
         {initialItems.map(item => (
-          <Item item={item} />
+          <Item key={item.id} item={item} />
         ))}
       </ul>
     </div>
