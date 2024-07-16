@@ -1,18 +1,23 @@
 import { useState } from 'react';
 
-const initialItems = [
-  { id: 1, description: 'Passports', quantity: 2, packed: true },
-  { id: 2, description: 'Hiking Boots', quantity: 1, packed: false },
-  { id: 3, description: 'Sleeping Bag', quantity: 1, packed: false },
-  { id: 4, description: 'Socks', quantity: 12, packed: false },
-];
-
 export default function App() {
+  // Lifting State Up
+  // Moved from Form to Common Parent between it and PackingList
+  // This way we can share the state between them
+  const [items, setItems] = useState([]);
+  // We lifted the function to the parent component
+  function handleAddItems(item) {
+    // You can't mutate the state directly
+    // React is about immutability
+    // You can use the spread operator to create a new array
+    setItems([...items, item]);
+  }
+
   return (
     <div className="app">
       <Logo />
-      <Form />
-      <PackingList />
+      <Form onAddItems={handleAddItems} />
+      <PackingList items={items} />
       <Stats />
     </div>
   );
@@ -22,13 +27,14 @@ function Logo() {
   return <h1>🏝️ Far Away 🧳</h1>;
 }
 
-function Form() {
+function Form({ onAddItems }) {
   const [description, setDescription] = useState('');
   const [quantity, setQuantity] = useState(1);
   // Controlled Element steps:
   // 1_ Define the state like quantity above
   // 2_ Use the state on the element we want to controll
   // 3_ Update that state variable with the onChange event
+
   function handleSubmit(e) {
     e.preventDefault();
     // Check if Empty
@@ -40,6 +46,8 @@ function Form() {
       packed: false,
       id: Date.now(),
     };
+    // Add the new item to the list
+    onAddItems(newItem);
     // Return to Initial State
     setDescription('');
     setQuantity(1);
@@ -69,11 +77,11 @@ function Form() {
   );
 }
 
-function PackingList() {
+function PackingList({ items }) {
   return (
     <div className="list">
       <ul>
-        {initialItems.map(item => (
+        {items.map(item => (
           <Item key={item.id} item={item} />
         ))}
       </ul>
