@@ -25,6 +25,10 @@ export default function App() {
     );
   }
 
+  function handleClearList() {
+    setItems([]);
+  }
+
   // We can pass anything like a prop even a function
   return (
     <div className="app">
@@ -32,6 +36,7 @@ export default function App() {
       <Form onAddItems={handleAddItems} />
       <PackingList
         items={items}
+        onClearList={handleClearList}
         onDeleteItem={handleDeleteItem}
         onToggleItem={handleToggleItem}
       />
@@ -94,7 +99,7 @@ function Form({ onAddItems }) {
   );
 }
 
-function PackingList({ items, onDeleteItem, onToggleItem }) {
+function PackingList({ items, onClearList, onDeleteItem, onToggleItem }) {
   const [sortBy, setSortBy] = useState('input');
 
   let sortedItems;
@@ -130,6 +135,8 @@ function PackingList({ items, onDeleteItem, onToggleItem }) {
           <option value="description">Sort by description</option>
           <option value="packed">Sort by packed status</option>
         </select>
+
+        <button onClick={onClearList}>Clear List</button>
       </div>
     </div>
   );
