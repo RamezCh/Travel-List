@@ -26,7 +26,10 @@ export default function App() {
   }
 
   function handleClearList() {
-    setItems([]);
+    const confirmed = window.confirm(
+      'Are you sure you want to delete all Items?'
+    );
+    if (confirmed) setItems([]);
   }
 
   // We can pass anything like a prop even a function
